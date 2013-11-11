@@ -1,136 +1,151 @@
 /* global module:false */
 module.exports = function(grunt) {
-	var port = grunt.option('port') || 8000;
-	// Project configuration
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
-		meta: {
-			banner:
-				'/*!\n' +
-				' * reveal.js <%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd, HH:MM") %>)\n' +
-				' * http://lab.hakim.se/reveal-js\n' +
-				' * MIT licensed\n' +
-				' *\n' +
-				' * Copyright (C) 2013 Hakim El Hattab, http://hakim.se\n' +
-				' */'
-		},
+  var port = grunt.option('port') || 8000;
+  // Project configuration
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    meta: {
+      banner:
+        '/*!\n' +
+        ' * reveal.js <%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd, HH:MM") %>)\n' +
+        ' * http://lab.hakim.se/reveal-js\n' +
+        ' * MIT licensed\n' +
+        ' *\n' +
+        ' * Copyright (C) 2013 Hakim El Hattab, http://hakim.se\n' +
+        ' */'
+    },
 
-		// Tests will be added soon
-		qunit: {
-			files: [ 'test/*.html' ]
-		},
+    // Tests will be added soon
+    qunit: {
+      files: [ 'test/*.html' ]
+    },
 
-		uglify: {
-			options: {
-				banner: '<%= meta.banner %>\n'
-			},
-			build: {
-				src: 'js/reveal.js',
-				dest: 'js/reveal.min.js'
-			}
-		},
+    uglify: {
+      options: {
+        banner: '<%= meta.banner %>\n'
+      },
+      build: {
+        src: 'js/reveal.js',
+        dest: 'js/reveal.min.js'
+      }
+    },
 
-		cssmin: {
-			compress: {
-				files: {
-					'css/reveal.min.css': [ 'css/reveal.css' ]
-				}
-			}
-		},
+    cssmin: {
+      compress: {
+        files: {
+          'css/reveal.min.css': [ 'css/reveal.css' ]
+        }
+      }
+    },
 
-		sass: {
-			main: {
-				files: {
-					'css/theme/default.css': 'css/theme/source/default.scss',
-					'css/theme/beige.css': 'css/theme/source/beige.scss',
-					'css/theme/night.css': 'css/theme/source/night.scss',
-					'css/theme/serif.css': 'css/theme/source/serif.scss',
-					'css/theme/simple.css': 'css/theme/source/simple.scss',
-					'css/theme/sky.css': 'css/theme/source/sky.scss',
-					'css/theme/moon.css': 'css/theme/source/moon.scss',
-					'css/theme/solarized.css': 'css/theme/source/solarized.scss'
-				}
-			}
-		},
+    sass: {
+      main: {
+        files: {
+          'css/theme/default.css': 'css/theme/source/default.scss',
+          'css/theme/beige.css': 'css/theme/source/beige.scss',
+          'css/theme/night.css': 'css/theme/source/night.scss',
+          'css/theme/serif.css': 'css/theme/source/serif.scss',
+          'css/theme/simple.css': 'css/theme/source/simple.scss',
+          'css/theme/sky.css': 'css/theme/source/sky.scss',
+          'css/theme/moon.css': 'css/theme/source/moon.scss',
+          'css/theme/solarized.css': 'css/theme/source/solarized.scss'
+        }
+      }
+    },
 
-		jshint: {
-			options: {
-				curly: false,
-				eqeqeq: true,
-				immed: true,
-				latedef: true,
-				newcap: true,
-				noarg: true,
-				sub: true,
-				undef: true,
-				eqnull: true,
-				browser: true,
-				expr: true,
-				globals: {
-					head: false,
-					module: false,
-					console: false
-				}
-			},
-			files: [ 'Gruntfile.js', 'js/reveal.js' ]
-		},
+    compass: {
+      dist: {
+        options: {
+          sassDir: 'sass',
+          cssDir: 'css',
+          environment: 'production'
+        }
+      }
+    },
 
-		connect: {
-			server: {
-				options: {
-					port: port,
-					base: '.'
-				}
-			}
-		},
+    jshint: {
+      options: {
+        curly: false,
+        eqeqeq: true,
+        immed: true,
+        latedef: true,
+        newcap: true,
+        noarg: true,
+        sub: true,
+        undef: true,
+        eqnull: true,
+        browser: true,
+        expr: true,
+        globals: {
+          head: false,
+          module: false,
+          console: false
+        }
+      },
+      files: [ 'Gruntfile.js', 'js/reveal.js' ]
+    },
 
-		zip: {
-			'reveal-js-presentation.zip': [
-				'index.html',
-				'css/**',
-				'js/**',
-				'lib/**',
-				'images/**',
-				'plugin/**'
-			]
-		},
+    connect: {
+      server: {
+        options: {
+          port: port,
+          base: '.'
+        }
+      }
+    },
 
-		watch: {
-			main: {
-				files: [ 'Gruntfile.js', 'js/reveal.js', 'css/reveal.css' ],
-				tasks: 'default'
-			},
-			theme: {
-				files: [ 'css/theme/source/*.scss', 'css/theme/template/*.scss' ],
-				tasks: 'themes'
-			}
-		}
+    zip: {
+      'reveal-js-presentation.zip': [
+        'index.html',
+        'css/**',
+        'js/**',
+        'lib/**',
+        'images/**',
+        'plugin/**'
+      ]
+    },
 
-	});
+    watch: {
+      main: {
+        files: [ 'Gruntfile.js', 'js/reveal.js', 'css/reveal.css' ],
+        tasks: 'default'
+      },
+      theme: {
+        files: [ 'css/theme/source/*.scss', 'css/theme/template/*.scss' ],
+        tasks: 'themes'
+      },
+      compass: {
+        files: [ 'sass/[^_]*.sass' ],
+        tasks: 'compass'
+      }
+    }
 
-	// Dependencies
-	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
-	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
-	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
-	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
-	grunt.loadNpmTasks( 'grunt-contrib-watch' );
-	grunt.loadNpmTasks( 'grunt-contrib-sass' );
-	grunt.loadNpmTasks( 'grunt-contrib-connect' );
-	grunt.loadNpmTasks( 'grunt-zip' );
+  });
 
-	// Default task
-	grunt.registerTask( 'default', [ 'jshint', 'cssmin', 'uglify', 'qunit' ] );
+  // Dependencies
+  grunt.loadNpmTasks( 'grunt-contrib-qunit' );
+  grunt.loadNpmTasks( 'grunt-contrib-jshint' );
+  grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
+  grunt.loadNpmTasks( 'grunt-contrib-uglify' );
+  grunt.loadNpmTasks( 'grunt-contrib-watch' );
+  grunt.loadNpmTasks( 'grunt-contrib-sass' );
+  grunt.loadNpmTasks( 'grunt-contrib-connect' );
+  grunt.loadNpmTasks( 'grunt-contrib-compass' );
+  grunt.loadNpmTasks( 'grunt-zip' );
 
-	// Theme task
-	grunt.registerTask( 'themes', [ 'sass' ] );
+  // Default task
+  grunt.registerTask( 'default', [ 'jshint', 'cssmin', 'uglify', 'qunit' ] );
 
-	// Package presentation to archive
-	grunt.registerTask( 'package', [ 'default', 'zip' ] );
+  // Theme task
+  grunt.registerTask( 'themes', [ 'sass' ] );
 
-	// Serve presentation locally
-	grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
+  // Package presentation to archive
+  grunt.registerTask( 'package', [ 'default', 'zip' ] );
 
-	// Run tests
-	grunt.registerTask( 'test', [ 'jshint', 'qunit' ] );
+  // Serve presentation locally
+  grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
+
+  // Run tests
+  grunt.registerTask( 'test', [ 'jshint', 'qunit' ] );
 
 };

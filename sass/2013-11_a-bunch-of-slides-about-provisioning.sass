@@ -1,0 +1,53 @@
+@import 'font-faces'
+@import 'mixins'
+
+$color-title: lighten(#FF1A00, 10%)
+$color-text: #455372
+$color-high: lighten(#616A7F, 10%)
+$color-high2: #2D3956
+$color-back: #E7E7E7
+$color-back2: #E0E9E9
+
+.reveal
+  background: $color-back
+  background-color: $color-back
+  +base-font($font: 'Yanone Kaffeesatz', $weight: 200, $size: 4em)
+  letter-spacing: -0.02em
+  font-weight: 200
+  color: $color-text
+
+  ::selection
+    color: white
+    text-shadow: none
+
+  h1, h2, h3
+    font-weight: bold
+
+  h1
+    font-size: 2.25em
+    line-height: 0.9em
+    letter-spacing: 0.02em
+    color: $color-title
+    margin: 0 0 20px 0
+
+  h2, h3
+    font-size: 1.25em
+    color: $color-high
+
+  p, ol, ul
+    font-weight: 300
+    text-align: left
+
+  .center
+    text-align: center
+
+  ol
+    color: $color-high2
+
+  .small
+    font-size: 0.6em
+
+  .stretch .stretch-child
+    position: absolute
+    bottom: 0
+    width: 100%
