@@ -169,7 +169,17 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
     </section>
 
     <section>
-      <h2>The solution:</h2>
+      <h2>The problem:</h2>
+      <h3>Set the server to a desired state</h3>
+    </section>
+
+    <section>
+      <h2>The current solution:</h2>
+      <h3>Trial and error</h3>
+    </section>
+
+    <section>
+      <h2>The (real) solution:</h2>
       <h1>Provisioning</h1>
     </section>
 
@@ -182,26 +192,6 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
         <li><b>provisions</b> a stock of necessary supplies, especially food.</li>
         <li>A stipulation or qualification, especially a clause in a document or agreement.</li>
       </ol>
-    </section>
-
-    <section>
-      <h2>The problem:</h2>
-      <h3>Set the server to a desired state</h3>
-    </section>
-
-    <section>
-      <h2>The usual (dumb) solution:</h2>
-      <h3>Do stuff until you reach that</h3>
-    </section>
-
-    <section>
-      <h2>Now can you repeat it?</h2>
-      <h3>No?... thought so</h3>
-    </section>
-
-    <section>
-      <h2>The better solution:</h2>
-      <h3>Specify that state programatically</h3>
     </section>
 
     <section>
@@ -238,9 +228,6 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
     <section>
       <h1>Puppet</h1>
       <h2>Abuse it</h2>
-    </section>
-
-    <section>
     </section>
 
     <section>
@@ -334,9 +321,23 @@ gb::app::rails { 'test.gb-blog':
 }
       </pre>
     </section>
+
+    <section>
+      <h3>.env</h3>
+      <div>stage it</div>
+    </section>
+
+    <section>
+      <h3>Restarting services</h3>
+      <div>Monit / Runit / God</div>
+    </section>
+
+    <section>
+      <h3>Testing fragile deploys</h3>
+      <div>cap vagrant deploy</div>
+    </section>
     
-    <section data-state="intro">
-      <h1>THE END</h1>
+    <section data-background="/img/2013_11/the_end.jpg" data-background-size="550px">
     </section>
 </div>
 
