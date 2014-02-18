@@ -8,8 +8,6 @@ $color-high2: $color-high
 $color-back: #ffc
 
 .reveal
-  background: $color-back
-  background-color: $color-back
   +base-font($font: 'Yanone Kaffeesatz', $weight: 200, $size: 70px)
   letter-spacing: -0.02em
   font-weight: 200
@@ -17,7 +15,7 @@ $color-back: #ffc
   letter-spacing: 0.05rem
 
   ::selection
-    color: white
+    color: $color-high
     text-shadow: none
 
   h1
@@ -30,6 +28,9 @@ $color-back: #ffc
     font-size: 1.2em
     color: $color-high
 
+  h3
+    font-size: 1.2em
+
   p, ol, ul
     font-weight: 300
     text-align: left
@@ -38,7 +39,7 @@ $color-back: #ffc
     text-align: center
 
   ol, ul
-    color: $color-high2
+    color: $color-text
     font-size: 0.6em
 
   .small
@@ -61,5 +62,5 @@ $color-back: #ffc
     font-size: 0.3em
     padding: 10px
 
-  code
-    background-color: $color-back
+  .progress span
+    background-color: $color-title

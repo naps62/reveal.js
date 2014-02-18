@@ -17,6 +17,7 @@
 <!-- For syntax highlighting -->
 <link rel="stylesheet" href="lib/css/tomorrow.css">
 
+
 <!-- If the query includes 'print-pdf', use the PDF print sheet -->
 <script>
 document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
@@ -34,8 +35,8 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
   <div class="slides">
 
     <section data-state="intro">
-      <h2>A BUNCH OF SLIDES ABOUT</h2>
-      <h1>PROVISIONING</h1>
+      <h1>Provisioning</h1>
+      <h3>And the art of deploying</h3>
 
       <div class="stretch">
         <footer class="stretch-child">
@@ -46,76 +47,32 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
     </section>
 
     <section>
-      <h1>A Completely fictional story</h1>
-      <h2>(which did not happen to me... repeatedly)</h2>
+      <h1>How do you deploy?</h1>
+    </section>
+
+    <section data-background="#fff">
+      <h1 >Development Buzzwords:</h1>
+      <span class="fragment">Code Reviews</span>
+      <span class="fragment">, Design Patterns</span>
+      <span class="fragment">,<br />Best Practises</span>
+      <span class="fragment">,<br />Test All The Things!<img width="100px" src="/img/2014_02/X_all_the_Y.png" /></span>
     </section>
 
     <section>
-      <h1>Task list</h1>
-      <h2 class="stretch stretch-center">Access a server</h2>
-    </section>
-    <section>
-      <h1>Task list</h1>
-      <h2 class="stretch stretch-center">Change X</h2>
-    </section>
-    <section>
-      <h1>Task list</h1>
-      <h2 class="stretch stretch-center">Research random web tutorials</h2>
-    </section>
-    <section>
-      <h1>Task list</h1>
-      <h2 class="stretch stretch-center">Change Y</h2>
-    </section>
-    <section>
-      <h1>Task list</h1>
-      <h2 class="stretch stretch-center">Change X again, because Y broke it</h2>
-    </section>
-    <section>
-      <h1>In general</h1>
-      <h2 class="stretch stretch-center">Change stuff,<br />see if it's working,<br />repeat.</h2>
+      <h1 class="stretch">But on the server</h1>
+      <h3>No Patterns</h3>
+      <h3 style="margin-top: 20px">No Consistency</h3>
+      <h3 style="margin-top: 20px">No Tests</h3>
     </section>
 
-<!--     <section> -->
-<!--       <h1>What does this remind me of?</h1> -->
-<!--     </section> -->
-
-<!--     <section> -->
-<!--       <img src="/img/2014_02/coderdojo.jpg" /> -->
-<!--     </section> -->
-
-    <section>
-      <h2>How it feels like</h2>
-      <img src="/img/2014_02/chemistry_dog.jpg" />
+    <section data-background="#fff">
+      <img width="100%" src="/img/2014_02/clean-code.png" />
     </section>
 
     <section>
-      <ul>
-        <li><h2>No consistency</h2></li>
-        <li><h2>No standards</h2></li>
-        <li><h2>No documentation</h2></li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>We have Clean Code</h2>
+      <h3>We have Clean Code</h3>
       <br />
-      <h2>Why not Clean Servers as well?</h2>
-    </section>
-
-    <section>
-      <h2>The goal:</h2>
-      <h1>Set the server to a desired state</h1>
-    </section>
-
-    <section>
-      <h2>The usual solution:</h2>
-      <h1>Trial and error</h1>
-    </section>
-
-    <section>
-      <h2>The (better) solution:</h2>
-      <h1>Provisioning</h1>
-      <h2>Or PaaS, but we'll get to that</h2>
+      <h3>Why not Clean Servers as well?</h3>
     </section>
 
     <section>
@@ -129,10 +86,10 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
 
     <section>
       <ol class="small">
-        <li><h2>Bash Scripts</h2></li>
-        <li><h2>Puppet</h2></li>
-        <li><h2>Chef</h2></li>
-        <li><h2>Ansible</h2></li>
+        <li>Bash Scripts</li>
+        <li>Puppet</li>
+        <li>Chef</li>
+        <li>Ansible</li>
         <li>...</li>
       </ol>
     </section>
@@ -149,8 +106,6 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
 file { '/etc/ssh/sshd_config':
   ensure  => present,
   owner   => 'root',
-  group   => 'root',
-  mode    => 444,
   content => template('gb/sshd_config.erb'),
 }
       </code></pre>
@@ -161,11 +116,8 @@ file { '/etc/ssh/sshd_config':
       <pre class="stretch"><code class="ruby">
 User { 'deploy':
   ensure     => present,
-  home       => "/home/naps62",
+  home       => "/home/deploy",
   password   => 'secret_password_hash_here',
-  groups     => ['deploy', 'sudo'],
-  shell      => '/bin/bash',
-  managehome => true,
 }
       </code></pre>
     </section>
@@ -222,7 +174,7 @@ include gb
 include gb
 
 # setup nginx / database / puma / monit
-gb::app::rails { 'production':
+gb::app::rails { 'gb-blog':
 port    => 8443,
 db_pass => 'password'
 url     => 'gb-provisioning.example.com',
@@ -231,38 +183,34 @@ url     => 'gb-provisioning.example.com',
     </section>
 
     <section>
-      <h1>Deploys</h1>
-      <pre class="stretch"><code class="sh">
+      <img src="/img/2014_02/Vagrant.png" />
+    </section>
+
+    <section>
+      <h1 class="stretch">Deploying</h1>
+      <pre><code class="sh">
 # Test deploy
 $ cap vagrant deploy
 
 # Actually deploy
 $ cap production deploy
-
-# Restart everything related to the app
-$ cap production monit:restart
       </code></pre>
-    </section>
-
-    <section>
-      <img src="/img/2014_02/demo.jpg" />
-    </section>
-
-    <section>
-      <h1 class="stretch">PaaS</h1>
+      <div class="fragment">
+        <h3 style="display:inline">Or automatically with</h3>
+        <img src="/img/2014_02/semaphoreapp.png" />
+      </div>
     </section>
 
     <section>
       <h1>PaaS</h1>
-      <p class="center stretch stretch-center">You probably know <b>Heroku</b></p>
+      <div class="stretch stretch-center">
+        <p>You probably know <img style="height: 1em; vertical-align: bottom" src="/img/2014_02/heroku.jpg" /></p>
+        <p>Open source alternative: <b>Dokku</b></p>
+      </div>
     </section>
 
     <section>
-      <h1>PaaS</h1>
-      <p class="center stretch stretch-center">Open source alternative: <b>Dokku</b></p>
-    </section>
-
-    <section data-background="/img/2013_11/the_end.jpg" data-background-size="550px">
+      <img src="/img/2013_11/the_end.jpg" />
     </section>
 </div>
 
@@ -276,13 +224,13 @@ $ cap production monit:restart
 Reveal.initialize({
   width: 800,
   height: 600,
-  controls: false,
-  progress: false,
+  controls: true,
+  progress: true,
   history: true,
   center: true,
 
   theme: 'solarized', // available themes are in /css/theme
-  transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+  transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
 
   // Optional libraries used to extend on reveal.js
   dependencies: [
