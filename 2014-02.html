@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+
+<title>Provisioning, deployment, and whatever else i can think of</title>
+
+<meta name="description" content="A bunch of slides about provisioning" />
+<meta name="author" content="Miguel Palhas">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet" href="css/reveal.min.css">
+<link rel="stylesheet" href="css/2014-02.css">
+<!-- For syntax highlighting -->
+<link rel="stylesheet" href="lib/css/tomorrow.css">
+
+<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+<script>
+document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+</script>
+
+<!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+  <!-- Any section element inside of this container is displayed as a slide -->
+  <div class="slides">
+
+    <section data-state="intro">
+      <h2>A BUNCH OF SLIDES ABOUT</h2>
+      <h1>PROVISIONING</h1>
+
+      <div class="stretch">
+        <footer class="stretch-child">
+          <p class="center">Miguel Palhas</p>
+          <p class="center">mpalhas@gmail.com / @naps62</p>
+        </footer>
+      </div>
+    </section>
+
+    <section>
+      <h1>A Completely fictional story</h1>
+      <h2>(which did not happen to me... repeatedly)</h2>
+    </section>
+
+    <section>
+      <h1>Task list</h1>
+      <h2 class="stretch stretch-center">Access a server</h2>
+    </section>
+    <section>
+      <h1>Task list</h1>
+      <h2 class="stretch stretch-center">Change X</h2>
+    </section>
+    <section>
+      <h1>Task list</h1>
+      <h2 class="stretch stretch-center">Research random web tutorials</h2>
+    </section>
+    <section>
+      <h1>Task list</h1>
+      <h2 class="stretch stretch-center">Change Y</h2>
+    </section>
+    <section>
+      <h1>Task list</h1>
+      <h2 class="stretch stretch-center">Change X again, because Y broke it</h2>
+    </section>
+    <section>
+      <h1>In general</h1>
+      <h2 class="stretch stretch-center">Change stuff,<br />see if it's working,<br />repeat.</h2>
+    </section>
+
+<!--     <section> -->
+<!--       <h1>What does this remind me of?</h1> -->
+<!--     </section> -->
+
+<!--     <section> -->
+<!--       <img src="/img/2014_02/coderdojo.jpg" /> -->
+<!--     </section> -->
+
+    <section>
+      <h2>How it feels like</h2>
+      <img src="/img/2014_02/chemistry_dog.jpg" />
+    </section>
+
+    <section>
+      <ul>
+        <li><h2>No consistency</h2></li>
+        <li><h2>No standards</h2></li>
+        <li><h2>No documentation</h2></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>We have Clean Code</h2>
+      <br />
+      <h2>Why not Clean Servers as well?</h2>
+    </section>
+
+    <section>
+      <h2>The goal:</h2>
+      <h1>Set the server to a desired state</h1>
+    </section>
+
+    <section>
+      <h2>The usual solution:</h2>
+      <h1>Trial and error</h1>
+    </section>
+
+    <section>
+      <h2>The (better) solution:</h2>
+      <h1>Provisioning</h1>
+      <h2>Or PaaS, but we'll get to that</h2>
+    </section>
+
+    <section>
+      <h1>pro·vi·sion: </h1>
+      <ol>
+        <li>The act of supplying or fitting out.</li>
+        <li>A preparatory action or measure.</li>
+        <li>A stipulation or qualification, especially a clause in a document or agreement.</li>
+      </ol>
+    </section>
+
+    <section>
+      <ol class="small">
+        <li><h2>Bash Scripts</h2></li>
+        <li><h2>Puppet</h2></li>
+        <li><h2>Chef</h2></li>
+        <li><h2>Ansible</h2></li>
+        <li>...</li>
+      </ol>
+    </section>
+
+    <section>
+      <h1>Puppet 101</h1>
+
+      <div class="stretch">Define state, not actions</div>
+    </section>
+
+    <section>
+      <h1>Puppet 101: Files</h1>
+      <pre class="stretch"><code class="ruby">
+file { '/etc/ssh/sshd_config':
+  ensure  => present,
+  owner   => 'root',
+  group   => 'root',
+  mode    => 444,
+  content => template('gb/sshd_config.erb'),
+}
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>Other Resources</h1>
+      <pre class="stretch"><code class="ruby">
+User { 'deploy':
+  ensure     => present,
+  home       => "/home/naps62",
+  password   => 'secret_password_hash_here',
+  groups     => ['deploy', 'sudo'],
+  shell      => '/bin/bash',
+  managehome => true,
+}
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>System Services</h1>
+      <pre class="stretch"><code class="ruby">
+package { 'monit':
+  ensure => installed,
+}
+
+service { 'monit':
+  ensure => running,
+  require => Package['monit'],
+}
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>Puppet Modules</h1>
+      <pre class="stretch"><code class="ruby">
+# Full PostgreSQL installation and setup
+class { postgresql::server: }
+
+# Have a db ready
+postgresql::server::db { 'sample-db':
+  user     => 'deploy',
+  password => postgresql_password('deploy', 'secret'),
+}
+      </code></pre>
+    </section>
+
+
+    <section>
+      <img src="/img/2014_02/later.png" />
+    </section>
+
+    <section>
+      <h1 class="stretch">gb-puppet</h1>
+    </section>
+    
+    <section>
+      <h1>gb-puppet</h1>
+      <pre class="stretch"><code class="ruby">
+# setup base packages / user / etc
+include gb
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>gb-puppet</h1>
+      <pre class="stretch"><code class="ruby">
+# setup base packages / user / etc
+include gb
+
+# setup nginx / database / puma / monit
+gb::app::rails { 'production':
+port    => 8443,
+db_pass => 'password'
+url     => 'gb-provisioning.example.com',
+}
+      </code></pre>
+    </section>
+
+    <section>
+      <h1>Deploys</h1>
+      <pre class="stretch"><code class="sh">
+# Test deploy
+$ cap vagrant deploy
+
+# Actually deploy
+$ cap production deploy
+
+# Restart everything related to the app
+$ cap production monit:restart
+      </code></pre>
+    </section>
+
+    <section>
+      <img src="/img/2014_02/demo.jpg" />
+    </section>
+
+    <section>
+      <h1 class="stretch">PaaS</h1>
+    </section>
+
+    <section>
+      <h1>PaaS</h1>
+      <p class="center stretch stretch-center">You probably know <b>Heroku</b></p>
+    </section>
+
+    <section>
+      <h1>PaaS</h1>
+      <p class="center stretch stretch-center">Open source alternative: <b>Dokku</b></p>
+    </section>
+
+    <section data-background="/img/2013_11/the_end.jpg" data-background-size="550px">
+    </section>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
+
+<script>
+
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  width: 800,
+  height: 600,
+  controls: false,
+  progress: false,
+  history: true,
+  center: true,
+
+  theme: 'solarized', // available themes are in /css/theme
+  transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+    // { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+    // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});
+
+</script>
+
+</body>
+</html>
