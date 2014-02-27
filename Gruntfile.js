@@ -4,51 +4,18 @@ module.exports = function(grunt) {
   // Project configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    meta: {
-      banner:
-        '/*!\n' +
-        ' * reveal.js <%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd, HH:MM") %>)\n' +
-        ' * http://lab.hakim.se/reveal-js\n' +
-        ' * MIT licensed\n' +
-        ' *\n' +
-        ' * Copyright (C) 2013 Hakim El Hattab, http://hakim.se\n' +
-        ' */'
-    },
-
-    // Tests will be added soon
-    qunit: {
-      files: [ 'test/*.html' ]
-    },
-
-    uglify: {
-      options: {
-        banner: '<%= meta.banner %>\n'
-      },
-      build: {
-        src: 'js/reveal.js',
-        dest: 'js/reveal.min.js'
-      }
-    },
-
-    cssmin: {
-      compress: {
-        files: {
-          'css/reveal.min.css': [ 'css/reveal.css' ]
-        }
-      }
-    },
 
     sass: {
       main: {
         files: {
-          'css/theme/default.css': 'css/theme/source/default.scss',
-          'css/theme/beige.css': 'css/theme/source/beige.scss',
-          'css/theme/night.css': 'css/theme/source/night.scss',
-          'css/theme/serif.css': 'css/theme/source/serif.scss',
-          'css/theme/simple.css': 'css/theme/source/simple.scss',
-          'css/theme/sky.css': 'css/theme/source/sky.scss',
-          'css/theme/moon.css': 'css/theme/source/moon.scss',
-          'css/theme/solarized.css': 'css/theme/source/solarized.scss'
+          'reveal/css/theme/default.css': 'reveal/css/theme/source/default.scss',
+          'reveal/css/theme/beige.css': 'reveal/css/theme/source/beige.scss',
+          'reveal/css/theme/night.css': 'reveal/css/theme/source/night.scss',
+          'reveal/css/theme/serif.css': 'reveal/css/theme/source/serif.scss',
+          'reveal/css/theme/simple.css': 'reveal/css/theme/source/simple.scss',
+          'reveal/css/theme/sky.css': 'reveal/css/theme/source/sky.scss',
+          'reveal/css/theme/moon.css': 'reveal/css/theme/source/moon.scss',
+          'reveal/css/theme/solarized.css': 'reveal/css/theme/source/solarized.scss'
         }
       }
     },
@@ -57,7 +24,7 @@ module.exports = function(grunt) {
       dist: {
         options: {
           sassDir: 'sass',
-          cssDir: 'css',
+          cssDir: 'reveal/css',
           environment: 'production'
         }
       }
@@ -82,7 +49,7 @@ module.exports = function(grunt) {
           console: false
         }
       },
-      files: [ 'Gruntfile.js', 'js/reveal.js' ]
+      files: [ 'Gruntfile.js', 'reveal/js/reveal.js' ]
     },
 
     connect: {
@@ -94,24 +61,13 @@ module.exports = function(grunt) {
       }
     },
 
-    zip: {
-      'reveal-js-presentation.zip': [
-        'index.html',
-        'css/**',
-        'js/**',
-        'lib/**',
-        'images/**',
-        'plugin/**'
-      ]
-    },
-
     slim: {
       dist: {
         files: [{
           expand: true,
           cwd: 'slim',
           src: ['{,*/}*.slim'],
-          dest: '.',
+          dest: 'reveal',
           ext: '.html'
         }]
       }
@@ -119,11 +75,11 @@ module.exports = function(grunt) {
 
     watch: {
       main: {
-        files: [ 'Gruntfile.js', 'js/reveal.js', 'css/reveal.css' ],
+        files: [ 'Gruntfile.js', 'reveal/js/reveal.js', 'reveal/css/reveal.css' ],
         tasks: 'default'
       },
       theme: {
-        files: [ 'css/theme/source/*.scss', 'css/theme/template/*.scss' ],
+        files: [ 'reveal/css/theme/source/*.scss', 'reveal/css/theme/template/*.scss' ],
         tasks: 'themes'
       },
       compass: {
@@ -139,29 +95,15 @@ module.exports = function(grunt) {
   });
 
   // Dependencies
-  grunt.loadNpmTasks( 'grunt-contrib-qunit' );
-  grunt.loadNpmTasks( 'grunt-contrib-jshint' );
-  grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
-  grunt.loadNpmTasks( 'grunt-contrib-uglify' );
   grunt.loadNpmTasks( 'grunt-contrib-watch' );
   grunt.loadNpmTasks( 'grunt-contrib-sass' );
   grunt.loadNpmTasks( 'grunt-contrib-connect' );
   grunt.loadNpmTasks( 'grunt-contrib-compass' );
-  grunt.loadNpmTasks( 'grunt-zip' );
   grunt.loadNpmTasks( 'grunt-slim' );
-
-  // Default task
-  grunt.registerTask( 'default', [ 'jshint', 'cssmin', 'uglify', 'qunit' ] );
 
   // Theme task
   grunt.registerTask( 'themes', [ 'sass' ] );
 
-  // Package presentation to archive
-  grunt.registerTask( 'package', [ 'default', 'zip' ] );
-
   // Serve presentation locally
-  grunt.registerTask( 'serve', [ 'connect', 'watch' ] );
-
-  // Run tests
-  grunt.registerTask( 'test', [ 'jshint', 'qunit' ] );
+  grunt.registerTask( 'default', [ 'connect', 'watch' ] );
 };
