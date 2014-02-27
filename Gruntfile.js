@@ -147,5 +147,4 @@ module.exports = function(grunt) {
 
   // Run tests
   grunt.registerTask( 'test', [ 'jshint', 'qunit' ] );
-
 };
