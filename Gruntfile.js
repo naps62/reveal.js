@@ -105,6 +105,18 @@ module.exports = function(grunt) {
       ]
     },
 
+    slim: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'slim',
+          src: ['{,*/}*.slim'],
+          dest: '.',
+          ext: '.html'
+        }]
+      }
+    },
+
     watch: {
       main: {
         files: [ 'Gruntfile.js', 'js/reveal.js', 'css/reveal.css' ],
@@ -117,6 +129,10 @@ module.exports = function(grunt) {
       compass: {
         files: [ 'sass/[^_]*.sass' ],
         tasks: 'compass'
+      },
+      slim: {
+        files: [ 'slim/[^_]*.slim' ],
+        tasks: 'slim'
       }
     }
 
@@ -132,6 +148,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks( 'grunt-contrib-connect' );
   grunt.loadNpmTasks( 'grunt-contrib-compass' );
   grunt.loadNpmTasks( 'grunt-zip' );
+  grunt.loadNpmTasks( 'grunt-slim' );
 
   // Default task
   grunt.registerTask( 'default', [ 'jshint', 'cssmin', 'uglify', 'qunit' ] );

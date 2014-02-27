@@ -1,0 +1,20 @@
+@import 'font-faces'
+@import 'mixins'
+
+.reveal
+  +base-font($font: 'Arial', $weight: 200, $size: 30px)
+  .full-table
+    width: 100%
+    td
+      padding: 0
+      margin: 0
+      pre
+        width: 100%
+
+  pre
+    +base-font($font: 'Inconsolata', $weight: 200, $size: 18px)
+    box-shadow: none
+
+  .middle
+    width: 60%
+    margin-left: 20%
