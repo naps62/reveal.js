@@ -1,0 +1,107 @@
+.reveal h1 {
+  font-size: 3em;
+}
+
+.wide * {
+  margin-bottom: 20px;
+}
+
+.reveal section img {
+  margin-top: 0;
+}
+
+.reveal .no-bullet {
+  list-style-type: none;
+}
+
+.reveal .small {
+  font-size: 0.6em;
+}
+
+.reveal section img.no-shadow {
+  border: 0;
+  -webkit-box-shadow: 0 0 0 0;
+  -moz-box-shadow: 0 0 0 0;
+  box-shadow: 0 0 0 0;
+}
+
+.highlight {
+  font-weight: bold;
+  color: #C00;
+}
+
+.two-cols div:first-child {
+  float: left;
+  width: 50%;
+}
+.two-cols div:last-child {
+  float: right;
+  width: 50%;
+}
+
+.reveal section .table {
+  table-layout: fixed;
+  text-align: center;
+  margin: auto;
+  font-size: 0.8em;
+  line-height: 1.2em;
+  border-collapse: collapse;
+  font-size: 0.7em;
+}
+
+.reveal section .table th {
+  vertical-align: bottom;
+}
+
+.reveal .table th {
+  border-bottom: 1px solid black;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: solid 1px black;
+  margin: 0;
+  padding: 0;
+}
+
+.reveal .bench-table td:first-child,
+.reveal .bench-table th:first-child {
+  text-align: right;
+  padding-right: 30px;
+}
+.reveal .bench-table td:last-child,
+.reveal .bench-table th:last-child {
+  text-align: left;
+  padding-right: 30px;
+}
+
+.reveal .speedup-table {
+  width: 100%;
+  border-bottom: 1px solid black;
+}
+.reveal .speedup-table * {
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.reveal .speedup-table .up {
+  background-color: #75EB8B;
+}
+
+.reveal .speedup-table .down {
+  background-color: #EB7575;
+}
+
+
+.reveal section .loc-table {
+  width: 70%;
+}
+.reveal section .loc-table * {
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.reveal section .lol-table {
+  margin-top: 3em;
+}
+.reveal section .lol-table * {
+  text-align: center;
+}
