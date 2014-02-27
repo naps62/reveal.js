@@ -1,5 +1,5 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Provisioning, deployment, and whatever else i can think of</title><meta content="A bunch of slides about provisioning" name="description" /><meta content="Miguel Palhas" name="author" /><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" /><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" /><link href="css/reveal.min.css" rel="stylesheet" /><link href="css/2014-02-28_javascript_best_practices.css" rel="stylesheet" /><!--For syntax highlighting--><link href="lib/css/tomorrow.css" rel="stylesheet" /><!--If the query includes 'print-pdf', use the PDF print sheet--><script type="text/javascript">document.write( '' );</script><!--[if lt IE 9]
-| <script src="lib/js/html5shiv.js"></script>--></head><body><div class="reveal"><div class="slides"><section data-state="intro"><h1>Javascript (Best) Practices</h1></section><section><table class="full-table"><h1>Our template</h1><tr><td><pre><code class="coffeescript"># app/javascripts/feature.coffee
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="Miguel Palhas" name="author" /><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" /><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" /><link href="css/reveal.min.css" rel="stylesheet" /><!--If the query includes 'print-pdf', use the PDF print sheet--><script type="text/javascript">document.write( '' );</script><!--[if lt IE 9]
+| <script src="lib/js/html5shiv.js"></script>--><title>Javascript (Best) Pratices</title><meta content="Javascript (Best) Practices" name="description" /><link href="css/2014-02-28_javascript_best_practices.css" rel="stylesheet" /><!--For syntax highlighting--><link href="lib/css/tomorrow.css" rel="stylesheet" /></head><body><div class="reveal"><div class="slides"><section data-state="intro"><h1>Javascript (Best) Practices</h1></section><section class="how_we_do_it"><h1>How we do it</h1><pre class="stretch"><code class="coffeescript"># app/javascripts/feature.coffee
 $ ->
   feature =
     init: ->
@@ -7,18 +7,211 @@ $ ->
       setupSomeEvents()
 
   window.project ||= {}
-  window.project.feature = feature.init</code></pre></td><td><pre><code class="coffeescript"># app/views/some/view.slim
+  window.project.feature = feature.init
+
+
+# app/views/some/view.slim
 coffee:
   $ ->
-    window.project.feature()</code></pre></td></tr></table></section><section><h1>Doesn't look so bad, right?</h1><pre class="middle"><code class="coffeescript"># app/javascripts/feature.coffee
-$ ->
-  feature =
-    init: ->
-      doSomeInitialization()
-      setupSomeEvents()
+    window.project.feature()</code></pre></section><section><h1>Doesn't look so bad, right?</h1></section><section><h1>Real Life Example</h1></section><section class="spy-full"><pre class="stretch"><code class="coffeescript">$ ->
+  headerScrollSpy =
+    animateScrollUntilScrollItem: (itemId) ->
+      $('html, body').stop().animate({
+          scrollTop: @getOffsetForScrollItem(itemId)
+      }, 300)
 
-  window.project ||= {}
-  window.project.feature = feature.init</code></pre></section><section><h1>Let's see a more complete example</h1></section><section><pre class="middle"><code class="coffeescript">asdasdasdasdad</code></pre></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.min.js"></script><script type="text/javascript">Reveal.initialize({
+    changeActiveScrollItemIfDifferentFromLastScroll: (id) ->
+      if (@lastId != id)
+        @lastId = id
+        @menuItems.parent().removeClass("active")
+        @menuItems.filter("[href=\"/\##{id}\"]").parent().addClass("active")
+
+    fetchScrollItems: ->
+      @menuItems.map (index, elem) =>
+        item = $(@getScrollItemIdFromMenuItem(elem))
+        if (item.length)
+          return item
+
+    getIdFromScrollItem: (item) ->
+      if item && item.length then item[0].id else ""
+
+    getOffsetForScrollItem: (itemId) ->
+      if itemId == "#" then 0 else $(itemId).offset().top
+
+    getScrollItemIdFromMenuItem: (item) ->
+      $(item).attr("href").substring(1)
+
+    setActiveMenuItem: ->
+      visibleItemId = @getIdFromScrollItem(@visibleScrollItem())
+      @changeActiveScrollItemIfDifferentFromLastScroll(visibleItemId)
+
+    visibleScrollItem: ->
+      offsetFromTop = $(event.target).scrollTop()
+      visibleItem = @scrollItems.map ->
+        if ($(this).offset().top <= offsetFromTop)
+          return this
+      visibleItem = @scrollItems.slice(0, 1) unless visibleItem.length
+      visibleItem = visibleItem[visibleItem.length-1]
+      return visibleItem
+
+    setup: ->
+      @lastId = @topMenu = $(".main-header nav")
+      @topMenuHeight = @topMenu.outerHeight()
+      @menuItems = @topMenu.find("a")
+      @scrollItems = @fetchScrollItems()
+
+    clickMenuItemListener: ->
+      @menuItems.click (event) =>
+        @animateScrollUntilScrollItem(@getScrollItemIdFromMenuItem(event.target))
+        event.preventDefault()
+
+    scrollPageListener: ->
+      $(window).scroll =>
+        @setActiveMenuItem()
+
+    init: ->
+      headerScrollSpy.setup()
+      headerScrollSpy.clickMenuItemListener()
+      headerScrollSpy.scrollPageListener()
+      headerScrollSpy.setActiveMenuItem()
+
+  window.irs ||= {}
+  window.irs.headerScrollSpy = headerScrollSpy.init</code></pre></section><section class="spy-summary"><h1>Summary</h1><pre class="stretch"><code class="coffeescript">$ ->
+  headerScrollSpy =
+    [ several mehotds here... ]
+
+    setup: ->
+
+    clickMenuItemListener: ->
+    scrollPageListener: ->
+
+    init: ->
+
+  window.irs ||= {}
+  window.irs.headerScrollSpy = headerScrollSpy.init</code></pre></section><section class="stepdown-rule"><h1>stepdown rule</h1><div class="stretch stretch-middle"><p>Clean Code, pg. 37:</p><blockquote>We want code to read like a top-down narrative</blockquote></div></section><section><pre class="stretch middle"><code class="coffeescript">$ ->
+  headerScrollSpy =
+
+    init: ->
+      @setup()
+      blah blah
+
+    setup: ->
+      blah blah blah
+
+    [ all that other stuff ]</code></pre></section><section><h1>init &amp; setup?</h1></section><section><pre class="stretch middle"><code class="coffeescript">$ ->
+  headerScrollSpy =
+
+    init: ->
+      blah blah
+      blah blah blah
+
+    [ all that other stuff ]</code></pre></section><section><h1>No need for</h1><h1>$ -&gt;</h1></section><section><pre class="stretch middle"><code class="coffeescript">headerScrollSpy =
+
+  init: ->
+    blah blah
+    blah blah blah
+
+  [ all that other stuff ]</code></pre></section><section data-background="#f88"><h1>Random Slide!</h1><img src="img/2014_02_28/randomness.gif" width="400px" /></section><section><h1>Let's write better code, shall we?</h1></section><section class="spy-better_code"><h1>Bad</h1><pre><code class="coffeescript">getIdFromScrollItem: (item) ->
+if item && item.length then item[0].id else ""</code></pre><div class="fragment" style="margin-top:2em"><h1>Good</h1><pre><code class="coffeescript">getIdFromScrollItem: ($item) ->
+  $item.attr('id')</code></pre></div></section><section><h1>A bigger example</h1></section><section><pre class="stretch"><code class="coffeescript">makeRed =
+  init: -&gt;
+    @$el = $(&#39;#some_element&#39;)
+    @clickHandler()
+
+  clickHandler: -&gt;
+    @$el.on &#39;click&#39;, =&gt;
+      @$el.css(&#39;color&#39;, &#39;red&#39;)
+
+window.project.makeRed = makeRed
+
+
+
+# in our view
+$ -&gt; window.project.makeRed()</code></pre></section><section><h1>Handler name makes no sense</h1></section><section><table class="full-table"><tr><th>Bad</th><th>Better</th></tr><tr><td><pre class="stretch"><code class="coffeescript">makeRed =
+  init: -&gt;
+    @$el = $(&#39;#some_element&#39;)
+    @clickHandler()
+
+  clickHandler: -&gt;
+    @$el.on &#39;click&#39;, =&gt;
+      @$el.css(&#39;color&#39;, &#39;red&#39;)
+
+window.project.makeRed = makeRed
+
+
+
+# in our view
+$ -&gt; window.project.makeRed()</code></pre></td><td><pre class="stretch"><code class="coffeescript">makeRed =
+  init: ->
+    @$el = $('#some_element')
+    @$el.on 'click', @clickHandler
+
+  clickHandler: =>
+    @$el.css('color', 'red')
+
+
+window.project.makeRed = makeRed
+
+
+
+# in our view
+$ -> window.project.makeRed()</code></pre></td></tr></table></section><section><h1>That's a singleton. No reusability</h1></section><section><table class="full-table"><tr><th>Bad</th><th>Better</th></tr><tr><td><pre class="stretch"><code class="coffeescript">makeRed =
+  init: -&gt;
+    @$el = $(&#39;#some_element&#39;)
+    @clickHandler()
+
+  clickHandler: -&gt;
+    @$el.on &#39;click&#39;, =&gt;
+      @$el.css(&#39;color&#39;, &#39;red&#39;)
+
+window.project.makeRed = makeRed
+
+
+
+# in our view
+$ -&gt; window.project.makeRed()</code></pre></td><td><pre class="stretch"><code class="coffeescript">class MakeRed =
+  constructor: (@$el) ->
+    @clickHandler()
+
+
+  clickHandler: ->
+    @$el.on 'click', =>
+      @$el.css('color', 'red')
+
+window.project.makeRed($el) = -> new MakeRed($el)
+
+
+
+# in our view
+$ -> window.project.makeRed($('#some_element'))</code></pre></td></tr></table></section><section><h1>Or with jQuery plugins</h1></section><section><table class="full-table"><tr><th>Bad</th><th>Better</th></tr><tr><td><pre class="stretch"><code class="coffeescript">makeRed =
+  init: -&gt;
+    @$el = $(&#39;#some_element&#39;)
+    @clickHandler()
+
+  clickHandler: -&gt;
+    @$el.on &#39;click&#39;, =&gt;
+      @$el.css(&#39;color&#39;, &#39;red&#39;)
+
+window.project.makeRed = makeRed
+
+
+
+# in our view
+$ -&gt; window.project.makeRed()</code></pre></td><td><pre class="stretch"><code class="coffeescript">$.fn.makeRead = ->
+  @on 'click', =>
+    @css('color', 'red')
+
+
+
+
+
+
+
+
+
+
+# in our view
+$ -> $('#some_element').makeRed()</code></pre></td></tr></table></section><section><h1 class="stretch">And much, much more</h1><h1>?</h1></section></div></div><script src="lib/js/head.min.js"></script><script src="js/reveal.min.js"></script><script type="text/javascript">Reveal.initialize({
   width: 800,
   height: 600,
   controls: true,

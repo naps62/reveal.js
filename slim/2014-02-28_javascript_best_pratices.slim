@@ -1,24 +1,16 @@
+- require "#{File.dirname(__FILE__)}/lib/slim_extensions"
+
 doctype html
 html
   head
-    meta charset="utf-8"
-    title Provisioning, deployment, and whatever else i can think of
-    meta content="A bunch of slides about provisioning" name="description"
-    meta content="Miguel Palhas" name="author"
-    meta content="yes" name="apple-mobile-web-app-capable"
-    meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"
-    meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"
-    link href="css/reveal.min.css" rel="stylesheet"
-    link href="css/2014-02-28_javascript_best_practices.css" rel="stylesheet"
+    == Slim::Template.new('slim/_head.slim').render(self)
 
+    title Javascript (Best) Pratices
+    meta content="Javascript (Best) Practices" name="description"
+
+    link href="css/2014-02-28_javascript_best_practices.css" rel="stylesheet"
     /! For syntax highlighting
     link href="lib/css/tomorrow.css" rel="stylesheet"
-
-    /! If the query includes 'print-pdf', use the PDF print sheet
-    javascript:
-      document.write( '' );
-    /![if lt IE 9]
-      | <script src="lib/js/html5shiv.js"></script>
 
   body
     .reveal
@@ -26,33 +18,9 @@ html
         section data={ state: :intro }
           h1 Javascript (Best) Practices
 
-        section
-          table.full-table
-            h1 Our template
-            tr
-              td
-                pre: code.coffeescript
-                  |
-                    # app/javascripts/feature.coffee
-                    $ ->
-                      feature =
-                        init: ->
-                          doSomeInitialization()
-                          setupSomeEvents()
-
-                      window.project ||= {}
-                      window.project.feature = feature.init
-              td
-                pre: code.coffeescript
-                  |
-                    # app/views/some/view.slim
-                    coffee:
-                      $ ->
-                        window.project.feature()
-
-        section
-          h1 Doesn't look so bad, right?
-          pre.middle: code.coffeescript
+        section.how_we_do_it
+          h1 How we do it
+          pre.stretch: code.coffeescript
             |
               # app/javascripts/feature.coffee
               $ ->
@@ -64,36 +32,180 @@ html
                 window.project ||= {}
                 window.project.feature = feature.init
 
-        section
-          h1 Let's see a more complete example
+
+              # app/views/some/view.slim
+              coffee:
+                $ ->
+                  window.project.feature()
 
         section
-          pre.middle: code.coffeescript
-            = Slim::Template.new('test.slim', {}).render(self)
+          h1 Doesn't look so bad, right?
+
+        section
+          h1 Real Life Example
+
+        section.spy-full
+          pre.stretch: code.coffeescript
+            == render '2014-02-28/header_scroll_spy_full'
 
 
-    script src="lib/js/head.min.js"
-    script src="js/reveal.min.js"
-    javascript:
-      Reveal.initialize({
-        width: 800,
-        height: 600,
-        controls: true,
-        progress: true,
-        history: true,
-        center: true,
+        section.spy-summary
+          h1 Summary
+          pre.stretch: code.coffeescript
+            == render '2014-02-28/header_scroll_spy_summary'
 
-        theme: 'solarized', // available themes are in /css/theme
-        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+        section.stepdown-rule
+          h1 stepdown rule
+          .stretch.stretch-middle
+            p Clean Code, pg. 37:
+            blockquote We want code to read like a top-down narrative
 
-        dependencies: [
-          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-          /* /!/ { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } } */
-          /* /!/ { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } } */
-        ]
-      });
+
+        section
+          pre.stretch.middle: code.coffeescript
+            == render '2014-02-28/header_scroll_spy_stepdown'
+
+        section
+          h1 init &amp; setup?
+
+        section
+          pre.stretch.middle: code.coffeescript
+            == render '2014-02-28/header_scroll_spy_init_setup'
+
+        section
+          h1 No need for
+          h1 $ -&gt;
+
+        section
+          pre.stretch.middle: code.coffeescript
+            == render '2014-02-28/header_scroll_spy_document_ready'
+
+        section data-background="#f88"
+          h1 Random Slide!
+          img src="img/2014_02_28/randomness.gif" width="400px"
+
+        section
+          h1 Let's write better code, shall we?
+
+        section.spy-better_code
+          h1 Bad
+          pre: code.coffeescript
+            |
+              getIdFromScrollItem: (item) ->
+              if item && item.length then item[0].id else ""
+
+          div.fragment style="margin-top:2em"
+            h1 Good
+            pre: code.coffeescript
+              |
+                getIdFromScrollItem: ($item) ->
+                  $item.attr('id')
+
+        section
+          h1 A bigger example
+
+        section
+          pre.stretch: code.coffeescript
+            = render '2014-02-28/header_scroll_spy_the_bad'
+        section
+          h1 Handler name makes no sense
+
+        section
+          table.full-table
+            tr
+              th Bad
+              th Better
+            tr
+              td
+                pre.stretch: code.coffeescript
+                  = render '2014-02-28/header_scroll_spy_the_bad'
+              td
+                pre.stretch: code.coffeescript
+                  |
+                    makeRed =
+                      init: ->
+                        @$el = $('#some_element')
+                        @$el.on 'click', @clickHandler
+
+                      clickHandler: =>
+                        @$el.css('color', 'red')
+
+
+                    window.project.makeRed = makeRed
+
+
+
+                    # in our view
+                    $ -> window.project.makeRed()
+
+
+
+        section
+          h1 That's a singleton. No reusability
+
+        section
+          table.full-table
+            tr
+              th Bad
+              th Better
+            tr
+              td
+                pre.stretch: code.coffeescript
+                  = render '2014-02-28/header_scroll_spy_the_bad'
+              td
+                pre.stretch: code.coffeescript
+                  |
+                    class MakeRed =
+                      constructor: (@$el) ->
+                        @clickHandler()
+
+
+                      clickHandler: ->
+                        @$el.on 'click', =>
+                          @$el.css('color', 'red')
+
+                    window.project.makeRed($el) = -> new MakeRed($el)
+
+
+
+                    # in our view
+                    $ -> window.project.makeRed($('#some_element'))
+
+
+        section
+          h1 Or with jQuery plugins
+
+        section
+          table.full-table
+            tr
+              th Bad
+              th Better
+            tr
+              td
+                pre.stretch: code.coffeescript
+                  = render '2014-02-28/header_scroll_spy_the_bad'
+              td
+                pre.stretch: code.coffeescript
+                  |
+                    $.fn.makeRead = ->
+                      @on 'click', =>
+                        @css('color', 'red')
+
+
+
+
+
+
+
+
+
+
+                    # in our view
+                    $ -> $('#some_element').makeRed()
+
+        section
+          h1.stretch And much, much more
+          h1 ?
+
+
+    == Slim::Template.new('slim/_reveal.slim').render(self)

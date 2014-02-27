@@ -1,0 +1,64 @@
+| $ ->
+    headerScrollSpy =
+      animateScrollUntilScrollItem: (itemId) ->
+        $('html, body').stop().animate({
+            scrollTop: @getOffsetForScrollItem(itemId)
+        }, 300)
+
+      changeActiveScrollItemIfDifferentFromLastScroll: (id) ->
+        if (@lastId != id)
+          @lastId = id
+          @menuItems.parent().removeClass("active")
+          @menuItems.filter("[href=\"/\#\#{id}\"]").parent().addClass("active")
+
+      fetchScrollItems: ->
+        @menuItems.map (index, elem) =>
+          item = $(@getScrollItemIdFromMenuItem(elem))
+          if (item.length)
+            return item
+
+      getIdFromScrollItem: (item) ->
+        if item && item.length then item[0].id else ""
+
+      getOffsetForScrollItem: (itemId) ->
+        if itemId == "#" then 0 else $(itemId).offset().top
+
+      getScrollItemIdFromMenuItem: (item) ->
+        $(item).attr("href").substring(1)
+
+      setActiveMenuItem: ->
+        visibleItemId = @getIdFromScrollItem(@visibleScrollItem())
+        @changeActiveScrollItemIfDifferentFromLastScroll(visibleItemId)
+
+      visibleScrollItem: ->
+        offsetFromTop = $(event.target).scrollTop()
+        visibleItem = @scrollItems.map ->
+          if ($(this).offset().top <= offsetFromTop)
+            return this
+        visibleItem = @scrollItems.slice(0, 1) unless visibleItem.length
+        visibleItem = visibleItem[visibleItem.length-1]
+        return visibleItem
+
+      setup: ->
+        @lastId = @topMenu = $(".main-header nav")
+        @topMenuHeight = @topMenu.outerHeight()
+        @menuItems = @topMenu.find("a")
+        @scrollItems = @fetchScrollItems()
+
+      clickMenuItemListener: ->
+        @menuItems.click (event) =>
+          @animateScrollUntilScrollItem(@getScrollItemIdFromMenuItem(event.target))
+          event.preventDefault()
+
+      scrollPageListener: ->
+        $(window).scroll =>
+          @setActiveMenuItem()
+
+      init: ->
+        headerScrollSpy.setup()
+        headerScrollSpy.clickMenuItemListener()
+        headerScrollSpy.scrollPageListener()
+        headerScrollSpy.setActiveMenuItem()
+
+    window.irs ||= {}
+    window.irs.headerScrollSpy = headerScrollSpy.init
