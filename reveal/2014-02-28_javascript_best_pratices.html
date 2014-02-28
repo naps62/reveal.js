@@ -12,8 +12,7 @@ $ ->
 
 # app/views/some/view.slim
 coffee:
-  $ ->
-    window.project.feature()</code></pre></section><section><h1>Doesn't look so bad, right?</h1></section><section><h1>Real Life Example</h1></section><section class="spy-full"><pre class="stretch"><code class="coffeescript">$ ->
+  $ -> window.project.feature()</code></pre></section><section><h1>Doesn't look so bad, right?</h1></section><section><h1>Real Life Example</h1></section><section class="spy-full"><pre class="stretch"><code class="coffeescript">$ ->
   headerScrollSpy =
     animateScrollUntilScrollItem: (itemId) ->
       $('html, body').stop().animate({
