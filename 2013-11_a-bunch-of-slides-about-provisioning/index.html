@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+
+<title>A bunch of slides about provisioning</title>
+
+<meta name="description" content="A bunch of slides about provisioning" />
+<meta name="author" content="Miguel Palhas">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet" href="css/reveal.min.css">
+<link rel="stylesheet" href="css/styles.css">
+<!-- For syntax highlighting -->
+<link rel="stylesheet" href="lib/css/zenburn.css">
+
+<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+<script>
+document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+</script>
+
+<!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="reveal">
+  <!-- Any section element inside of this container is displayed as a slide -->
+  <div class="slides">
+
+    <section data-state="intro">
+      <h2>A BUNCH OF SLIDES ABOUT</h2>
+      <h1>PROVISIONING</h1>
+
+      <div class="stretch">
+        <footer class="stretch-child">
+          <p class="center">Miguel Palhas</p>
+          <p class="center">mpalhas@gmail.com / @naps62</p>
+        </footer>
+      </div>
+    </section>
+
+    <section>
+      <h2>A long time ago in a galaxy far,</h2>
+      <h2>far away....</h2>
+      <p class="center small stretch stretch-bottom">(Disclaimer: This story is purely fictional)</p>
+    </section>
+
+    <section>
+      <h2>... there was a developer...</h2>
+      <h1>Mike P</h1>
+      <p class="center small stretch stretch-bottom">(Disclaimer: This story is purely fictional)</p>
+    </section>
+
+    <section>
+      <h2>... and a project...</h2>
+      <h1>ISJ</h1>
+      <p class="center small stretch stretch-bottom">(Disclaimer: This story is purely fictional)</p>
+    </section>
+
+    <section>
+      <h1>The quest:</h1>
+      <h2 class="stretch stretch-center">Access ISJ's server</h2>
+      <p class="center small">(Disclaimer: This story is purely fictional)</p>
+    </section>
+
+    <section>
+      <h1>The quest:</h1>
+      <h2 class="stretch stretch-center">Do X</h2>
+      <p class="center small">(Disclaimer: This story is purely fictional)</p>
+    </section>
+
+    <section>
+      <h1>The quest:</h1>
+      <h2 class="stretch stretch-center">Do Y</h2>
+      <p class="center small">(Disclaimer: This story is purely fictional)</p>
+    </section>
+
+    <section>
+      <h1>The quest:</h1>
+      <h2 class="stretch stretch-center">Do X again<br/>because Y broke it</h2>
+      <p class="center small">(Disclaimer: This story is purely fictional)</p>
+    </section>
+
+    <section>
+      <h1>The quest:</h1>
+      <h2 class="stretch stretch-center">Google stuff</h2>
+      <p class="center small">(Disclaimer: This story is purely fictional)</p>
+    </section>
+
+    <section>
+      <h1>The quest:</h1>
+      <h2 class="stretch stretch-center">Make it work for 10 minutes</h2>
+      <p class="center small">(Disclaimer: This story is purely fictional)</p>
+    </section>
+
+    <section>
+      <h1>The quest:</h1>
+      <h2 class="stretch stretch-center">Repeat</h2>
+      <p class="center small">(Disclaimer: This story is purely fictional)</p>
+    </section>
+
+    <section>
+      <h2 class="stretch">To be more specific:</h2>
+
+      <ul>
+        <li>ssh access (pass? public key?)</li>
+        <li>where is everything?</li>
+        <li>Who did all this?</li>
+        <li>And why?</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="stretch">To be more specific:</h2>
+
+      <ul>
+        <li>nginx</li>
+        <li>puma</li>
+        <li>postgreSQL</li>
+        <li>capistrano</li>
+        <li>SSL</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="stretch">To be more specific:</h2>
+
+      <ul>
+        <li>sockets</li>
+        <li>www redirects</li>
+        <li>.env</li>
+        <li>resque</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Now let's try with</h2>
+      <h1>Multistage</h1>
+    </section>
+
+    <section data-background="img/2013_11/boom.jpg" data-background-size="800px">
+    </section>
+
+    <section>
+      <h1>Finally</h1>
+      <h2>Quest completed</h2>
+    </section>
+
+    <section>
+      <h1>5 minutes later...</h1>
+    </section>
+
+    <section>
+      <h1>A wild <img src="img/2013_11/cohive_logo.png" /> appears...</h1>
+    </section>
+
+    <section>
+      <h2>The point is:</h2>
+      <div class="stretch stretch-center">
+        <h2>This process is</h2>
+        <h1>FUCKED UP</h1>
+      </div>
+    </section>
+
+    <section>
+      <h2>The problem:</h2>
+      <h3>Set the server to a desired state</h3>
+    </section>
+
+    <section>
+      <h2>The current solution:</h2>
+      <h3>Trial and error</h3>
+    </section>
+
+    <section>
+      <h2>The (real) solution:</h2>
+      <h1>Provisioning</h1>
+    </section>
+
+    <section>
+      <h2>pro·vi·sion: </h2>
+      <ol>
+        <li>The act of supplying or fitting out.</li>
+        <li>Something provided.</li>
+        <li>A preparatory action or measure.</li>
+        <li><b>provisions</b> a stock of necessary supplies, especially food.</li>
+        <li>A stipulation or qualification, especially a clause in a document or agreement.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Provisioning Tools:</h2>
+      <ol class="small">
+        <li>Custom scripts</li>
+        <li><b>Puppet</b></li>
+        <li>Chef</li>
+        <li>Ansible</li>
+        <li>...</li>
+      </ol>
+    </section>
+
+    <section>
+      <h1>Provisioning Guides 0.1</h1>
+      <h2>For Group Buddies</h2>
+    </section>
+
+    <section>
+      <h1>First</h1>
+      <h2>Some ground rules</h2>
+    </section>
+
+    <section>
+      <h1>SSH</h1>
+      <h2>Don't use it</h2>
+    </section>
+
+    <section>
+      <h1>Capistrano</h1>
+      <h2>Don't overuse it</h2>
+    </section>
+
+    <section>
+      <h1>Puppet</h1>
+      <h2>Abuse it</h2>
+    </section>
+
+    <section>
+      <h3>Puppet Manifest</h3>
+      <pre class="stretch">
+include gb
+
+class { gb::rvm_install:
+  ruby_version => 'ruby-2.0.0-p247',
+}
+
+gb::app::rails { 'gb-blog':
+  db_pass   => 'password',
+  url       => 'blog.groupbuddies.com',
+  ssl       => true,
+}
+
+gb::app::rails { 'test.gb-blog':
+  db_pass   => 'password',
+  url       => 'test.blog.groupbuddies.com',
+}
+      </pre>
+    </section>
+
+    <section>
+      <h3>Puppet Manifest</h3>
+      <pre>
+
+
+include gb
+
+
+      </pre>
+      <ul class="stretch">
+        <li>groupbuddies/public-keys</li>
+        <li>deploy user</li>
+        <li>nginx / nodejs / postgreSQL</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Puppet Manifest</h3>
+      <pre>
+
+class { gb::rvm_install:
+  ruby_version => 'ruby-2.0.0-p247',
+}
+
+      </pre>
+      <ul class="stretch">
+        <li>RVM install</li>
+        <li>ruby 2.0.0-p247 installed &amp; default</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Puppet Manifest</h3>
+      <pre>
+gb::app::rails { 'gb-blog':
+  db_pass   => 'password',
+  url       => 'blog.groupbuddies.com',
+  ssl       => true,
+}
+      </pre>
+      <ul class="stretch">
+        <li>postgres user/db</li>
+        <li>nginx &amp; puma</li>
+        <li>www redirect</li>
+        <li>optional SSL (with forced redirect)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Puppet Manifest</h3>
+      <pre class="stretch">
+include gb
+
+class { gb::rvm_install:
+  ruby_version => 'ruby-2.0.0-p247',
+}
+
+gb::app::rails { 'gb-blog':
+  db_pass   => 'password',
+  url       => 'blog.groupbuddies.com',
+  ssl       => true,
+}
+
+gb::app::rails { 'test.gb-blog':
+  db_pass   => 'password',
+  url       => 'test.blog.groupbuddies.com',
+}
+      </pre>
+    </section>
+
+    <section>
+      <h3>.env</h3>
+      <div>stage it</div>
+    </section>
+
+    <section>
+      <h3>Restarting services</h3>
+      <div>Monit / Runit / God</div>
+    </section>
+
+    <section>
+      <h3>Testing fragile deploys</h3>
+      <div>cap vagrant deploy</div>
+    </section>
+    
+    <section data-background="img/2013_11/the_end.jpg" data-background-size="550px">
+    </section>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.min.js"></script>
+
+<script>
+
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  width: 800,
+  height: 600,
+  controls: false,
+  progress: false,
+  history: true,
+  center: true,
+
+  theme: 'solarized', // available themes are in /css/theme
+  transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+    { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+    // { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+    // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});
+
+</script>
+
+</body>
+</html>
